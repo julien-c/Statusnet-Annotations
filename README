@@ -1,0 +1,25 @@
+Annotations, as name implies, is a Plugin to do Twitter-style Annotations (arbitrary custom semantic metadata that can be attached to notices).
+
+Twitter Annotations are described at http://dev.twitter.com/pages/annotations_overview but they're not in production at Twitter yet.
+
+Browse the code for the plugin here: http://gitorious.org/statusnet/mainline/merge_requests/148
+
+Author: Julien Chaumond
+
+
+Implementation details
+==
+
+Right now, submitted Annotations are only accepted in JSON format (see scripts/createnotice.php in the plugin's folder), either from the API or from the Web interface (set $demo parameter to true to add sample annotations to the Web interface's notice form)
+
+Annotations are stored directly in JSON in a custom table (annotations).
+
+However, they can be displayed in either JSON or XML depending on the API call (see scripts/shownotice.php in the plugin's folder, or just call any API call containing an annotated notice, for example http://EXAMPLE.COM/api/statuses/public_timeline.xml)
+
+Additionally, for selected Annotations types/attributes couples, the plugin stores their values directly in a specific database table, where:
+
+* the table name is the annotation type,
+* the column name is the annotation attribute,
+* and the value is the annotation value. 
+
+As an example, this is implemented for review-typed annotations (saved to a review table), see the data class in classes/Review.php 
